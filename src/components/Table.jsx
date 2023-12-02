@@ -37,6 +37,10 @@ const Table = () => {
     setCurrentPage(1);
   };
 
+  const handleDown = (e) => {
+    if(e.key === 'Enter') handleSearch();
+  }
+
   const handlePage = (num) => {
     setCurrentPage(num);
   };
@@ -123,6 +127,7 @@ const Table = () => {
 
   const handleClear = () => {
     setSearch("");
+    setSelectedRows([]);
     setFilteredData(data);
   };
 
@@ -138,7 +143,7 @@ const Table = () => {
               placeholder="Search any value"
               onChange={handleChange}
               value={search}
-              // onKeyUp={handleSearch}
+              onKeyDown={handleDown}
             />
             {search.length !== 0 && (
               <div className="flex items-center">
