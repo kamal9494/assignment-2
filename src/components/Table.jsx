@@ -87,13 +87,10 @@ const Table = () => {
   };
 
   const handleSave = (rowId) => {
-    // Assuming you have a form validation function
     if (!validateRow(rowId)) {
-      // Handle validation error, e.g., show an alert
       alert("Please fill in all fields.");
       return;
     }
-
     const updatedData = data.map((row) =>
       row.id === rowId
         ? {
@@ -121,6 +118,11 @@ const Table = () => {
     setFilteredData([]);
   }
 
+  const handleClear = () => {
+    setSearch('');
+    setFilteredData(data);
+  }
+
   const totalPages = Math.ceil(filteredData.length / page);
   return (
     <>
@@ -137,7 +139,7 @@ const Table = () => {
             />
             {search.length !== 0 && (
               <div className="flex items-center">
-                <IoMdClose size={25} className="cursor-pointer" onClick={() => setSearch('')}/>
+                <IoMdClose size={25} className="cursor-pointer" onClick={handleClear}/>
               </div>
             )}
             <button
