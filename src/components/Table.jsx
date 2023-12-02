@@ -63,9 +63,6 @@ const Table = () => {
 
   const handleSelectedDelete = () => {
     const updatedData = data.filter((user) => !selectedRows.includes(user));
-    const updatedFilteredData = filteredData.filter(
-      (user) => !selectedRows.includes(user)
-    );
     setData(updatedData);
     setFilteredData(updatedData);
     setSelectedRows([]);
