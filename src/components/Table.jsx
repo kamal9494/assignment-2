@@ -38,8 +38,8 @@ const Table = () => {
   };
 
   const handleDown = (e) => {
-    if(e.key === 'Enter') handleSearch();
-  }
+    if (e.key === "Enter") handleSearch();
+  };
 
   const handlePage = (num) => {
     setCurrentPage(num);
@@ -173,8 +173,9 @@ const Table = () => {
                   <input
                     type="checkbox"
                     checked={
-                      selectedRows.length === itemsOnPage || 
-                      (selectedRows.length !== 0 && filteredData.length === selectedRows.length)
+                      selectedRows.length === itemsOnPage ||
+                      (selectedRows.length !== 0 &&
+                        filteredData.length === selectedRows.length)
                     }
                     onChange={handleSelectAll}
                   />
@@ -252,33 +253,35 @@ const Table = () => {
                         )}
                       </td>
                       <td className="p-2 px-3 text-sm flex gap-2">
-                        {editableRows[user.id] ? (
-                          <button
-                            title="save"
-                            className="save rounded border p-1 bg-yellow-300"
-                            onClick={() => handleSave(user.id)}
-                          >
-                            Save
-                          </button>
+                        {/* {editableRows[user.id] ? (
+                          
                         ) : (
-                          <button
-                            title="edit"
-                            className="edit bg-white rounded border p-1"
-                            onClick={() => handleEdit(user.id)}
-                          >
-                            <IoCreateOutline
-                              className="cursor-pointer"
-                              size={22}
-                            />
-                          </button>
-                        )}
+                          
+                        )} */}
+                        <button
+                          title="edit"
+                          className={`edit ${editableRows[user.id] ? 'opacity-50 cursor-not-allowed' : ''} bg-white rounded border p-1`}
+                          onClick={() => handleEdit(user.id)}
+                        >
+                          <IoCreateOutline
+                            size={22}
+                          />
+                        </button>
+
+                        <button
+                          title="save"
+                          className={`save ${!editableRows[user.id] ? 'opacity-50 cursor-not-allowed' : ''} rounded border p-1 bg-yellow-300`}
+                          onClick={() => handleSave(user.id)}
+                        >
+                          Save
+                        </button>
                         <button
                           title="delete"
                           className="delete bg-white rounded border p-1"
                           onClick={() => handleDelete(user.id)}
                         >
                           <MdDeleteOutline
-                            className="text-red-500 cursor-pointer"
+                            className="text-red-500"
                             size={22}
                           />
                         </button>

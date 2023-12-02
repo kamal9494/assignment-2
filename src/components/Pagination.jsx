@@ -14,9 +14,11 @@ const Pagination = ({
         {selectedRows} of {totalUsers} row(s) selected.
       </div>
       <div className="flex gap-2 flex-col sm:flex-row">
-        <div className="text-sm flex items-center">
-          Page {currentPage} of {totalPages}
-        </div>
+        {totalPages >= 1 && (
+          <div className="text-sm flex items-center">
+            Page {currentPage} of {totalPages}
+          </div>
+        )}
         <div className="flex justify-center items-center gap-2">
           <button
             className={`first-page text-sm bg-gray-200 p-2 flex justify-center items-center border ${
