@@ -240,7 +240,7 @@ const Table = () => {
                         {editableRows[user.id] ? (
                           <button
                             title="save"
-                            className="save bg-white rounded border p-1 bg-yellow-300"
+                            className="save rounded border p-1 bg-yellow-300"
                             onClick={() => handleSave(user.id)}
                           >
                             Save
