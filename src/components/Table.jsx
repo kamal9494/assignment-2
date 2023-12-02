@@ -9,6 +9,7 @@ import { CiSearch } from "react-icons/ci";
 const API =
   "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json";
 const Table = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -21,6 +22,7 @@ const Table = () => {
     axios
       .get(API)
       .then((res) => {
+        setIsLoading(false);
         setData(res.data);
         setFilteredData(res.data);
       })
@@ -166,131 +168,141 @@ const Table = () => {
           </button>
         </div>
         <div className="overflow-auto rounded-lg shadow mt-3">
-          <table className="w-full border">
-            <thead className="bg-[#BDD5EA] border-2">
-              <tr className="p-2 text-sm font-semibold tracking-wide text-left">
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedRows.length === itemsOnPage ||
-                      (selectedRows.length !== 0 &&
-                        filteredData.length === selectedRows.length)
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </th>
-                <th className="p-3 text-sm tracking-wide text-left font-bold">
-                  Name
-                </th>
-                <th className="p-3 text-sm tracking-wide text-left font-bold">
-                  Email
-                </th>
-                <th className="p-3 text-sm tracking-wide text-left font-bold">
-                  Role
-                </th>
-                <th className="p-3 text-sm tracking-wide text-left font-bold">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData
-                .slice(
-                  (currentPage - 1) * itemsOnPage,
-                  currentPage * itemsOnPage
-                )
-                .map((user) => {
-                  return (
-                    <tr
-                      key={user.id}
-                      className={`${
-                        selectedRows.includes(user) ? "bg-gray-300" : ""
-                      } border-2`}
-                    >
-                      <td className="p-2 px-3 text-sm">
-                        <input
-                          key={user.id}
-                          type="checkbox"
-                          checked={selectedRows.includes(user)}
-                          onChange={() => handleSelectRow(user)}
-                        />
-                      </td>
-                      <td className="p-2 px-3 text-sm">
-                        {editableRows[user.id] ? (
+          {isLoading ? (
+            <div className="w-full text-center">Loading...</div>
+          ) : (
+            <table className="w-full border">
+              <thead className="bg-[#BDD5EA] border-2">
+                <tr className="p-2 text-sm font-semibold tracking-wide text-left">
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedRows.length === itemsOnPage ||
+                        (selectedRows.length !== 0 &&
+                          filteredData.length === selectedRows.length)
+                      }
+                      onChange={handleSelectAll}
+                    />
+                  </th>
+                  <th className="p-3 text-sm tracking-wide text-left font-bold">
+                    Name
+                  </th>
+                  <th className="p-3 text-sm tracking-wide text-left font-bold">
+                    Email
+                  </th>
+                  <th className="p-3 text-sm tracking-wide text-left font-bold">
+                    Role
+                  </th>
+                  <th className="p-3 text-sm tracking-wide text-left font-bold">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredData
+                  .slice(
+                    (currentPage - 1) * itemsOnPage,
+                    currentPage * itemsOnPage
+                  )
+                  .map((user) => {
+                    return (
+                      <tr
+                        key={user.id}
+                        className={`${
+                          selectedRows.includes(user) ? "bg-gray-300" : ""
+                        } border-2`}
+                      >
+                        <td className="p-2 px-3 text-sm">
                           <input
-                            className="w-[100%] p-1 bg-gray-100 border"
-                            type="text"
-                            id={`name-${user.id}`}
-                            defaultValue={user.name}
+                            key={user.id}
+                            type="checkbox"
+                            checked={selectedRows.includes(user)}
+                            onChange={() => handleSelectRow(user)}
                           />
-                        ) : (
-                          user.name
-                        )}
-                      </td>
-                      <td className="p-2 px-3 text-sm">
-                        {editableRows[user.id] ? (
-                          <input
-                            className="w-[100%] border bg-gray-100 p-1"
-                            type="text"
-                            id={`email-${user.id}`}
-                            defaultValue={user.email}
-                          />
-                        ) : (
-                          user.email
-                        )}
-                      </td>
-                      <td className="p-2 px-3 text-sm">
-                        {editableRows[user.id] ? (
-                          <input
-                            className="w-[100%] bg-gray-100 border p-1"
-                            type="text"
-                            id={`role-${user.id}`}
-                            defaultValue={user.role}
-                          />
-                        ) : (
-                          user.role
-                        )}
-                      </td>
-                      <td className="p-2 px-3 text-sm flex gap-2">
-                        {/* {editableRows[user.id] ? (
+                        </td>
+                        <td className="p-2 px-3 text-sm">
+                          {editableRows[user.id] ? (
+                            <input
+                              className="w-[100%] p-1 bg-gray-100 border"
+                              type="text"
+                              id={`name-${user.id}`}
+                              defaultValue={user.name}
+                            />
+                          ) : (
+                            user.name
+                          )}
+                        </td>
+                        <td className="p-2 px-3 text-sm">
+                          {editableRows[user.id] ? (
+                            <input
+                              className="w-[100%] border bg-gray-100 p-1"
+                              type="text"
+                              id={`email-${user.id}`}
+                              defaultValue={user.email}
+                            />
+                          ) : (
+                            user.email
+                          )}
+                        </td>
+                        <td className="p-2 px-3 text-sm">
+                          {editableRows[user.id] ? (
+                            <input
+                              className="w-[100%] bg-gray-100 border p-1"
+                              type="text"
+                              id={`role-${user.id}`}
+                              defaultValue={user.role}
+                            />
+                          ) : (
+                            user.role
+                          )}
+                        </td>
+                        <td className="p-2 px-3 text-sm flex gap-2">
+                          {/* {editableRows[user.id] ? (
                           
                         ) : (
                           
                         )} */}
-                        <button
-                          title="edit"
-                          className={`edit ${editableRows[user.id] ? 'opacity-50 cursor-not-allowed' : ''} bg-white rounded border p-1`}
-                          onClick={() => handleEdit(user.id)}
-                        >
-                          <IoCreateOutline
-                            size={22}
-                          />
-                        </button>
+                          <button
+                            title="edit"
+                            className={`edit ${
+                              editableRows[user.id]
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                            } bg-white rounded border p-1`}
+                            onClick={() => handleEdit(user.id)}
+                          >
+                            <IoCreateOutline size={22} />
+                          </button>
 
-                        <button
-                          title="save"
-                          className={`save ${!editableRows[user.id] ? 'opacity-50 cursor-not-allowed' : ''} rounded border p-1 bg-yellow-300`}
-                          onClick={() => handleSave(user.id)}
-                        >
-                          Save
-                        </button>
-                        <button
-                          title="delete"
-                          className="delete bg-white rounded border p-1"
-                          onClick={() => handleDelete(user.id)}
-                        >
-                          <MdDeleteOutline
-                            className="text-red-500"
-                            size={22}
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
+                          <button
+                            title="save"
+                            className={`save ${
+                              !editableRows[user.id]
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                            } rounded border p-1 bg-yellow-300`}
+                            onClick={() => handleSave(user.id)}
+                          >
+                            Save
+                          </button>
+                          <button
+                            title="delete"
+                            className="delete bg-white rounded border p-1"
+                            onClick={() => handleDelete(user.id)}
+                          >
+                            <MdDeleteOutline
+                              className="text-red-500"
+                              size={22}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          )}
           {filteredData.length === 0 && (
             <div className="w-full flex items-center justify-center">
               No Item
