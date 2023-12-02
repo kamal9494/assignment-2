@@ -168,7 +168,8 @@ const Table = () => {
                   <input
                     type="checkbox"
                     checked={
-                      selectedRows.length === itemsOnPage 
+                      selectedRows.length === itemsOnPage || 
+                      (selectedRows.length !== 0 && filteredData.length === selectedRows.length)
                     }
                     onChange={handleSelectAll}
                   />
