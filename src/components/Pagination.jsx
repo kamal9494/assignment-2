@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  FaAngleRight,
-  FaAngleLeft,
-} from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 
 const Pagination = ({
   currentPage,
@@ -12,25 +9,25 @@ const Pagination = ({
   selectedRows,
 }) => {
   return (
-    <div className="w-full flex justify-between p-4">
+    <div className="w-full justify-between p-4 flex gap-2 flex-col sm:flex-row">
       <div className="text-sm text-gray-600">
         {selectedRows} of {totalUsers} row(s) selected.
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-col sm:flex-row">
         <div className="text-sm flex items-center">
           Page {currentPage} of {totalPages}
         </div>
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center items-center gap-2">
           <button
-            className={`first-page h-[30px] bg-gray-100 p-2 flex justify-center items-center border ${
-              currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+            className={`first-page text-sm bg-gray-200 p-2 flex justify-center items-center border ${
+              currentPage <= 1 ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => handlePage(1)}
           >
             First Page
           </button>
           <button
-            className={`previous-page w-[30px] h-[30px] bg-gray-100 p-2 flex justify-center items-center border ${
+            className={`previous-page w-[30px] h-[30px] bg-gray-200 p-2 flex justify-center items-center border ${
               currentPage - 1 < 1 ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => handlePage(currentPage - 1)}
@@ -43,7 +40,9 @@ const Pagination = ({
             return (
               <button
                 key={index + 1}
-                className={`${index+1}-page w-[30px] h-[30px] bg-gray-100 p-2 cursor-pointer flex justify-center items-center border ${
+                className={`${
+                  index + 1
+                }-page w-[30px] h-[30px] bg-gray-200 p-2 cursor-pointer flex justify-center items-center border ${
                   currentPage === index + 1 ? "text-red-500" : ""
                 }`}
                 onClick={() => handlePage(index + 1)}
@@ -54,7 +53,7 @@ const Pagination = ({
           })}
 
           <button
-            className={`w-[30px] h-[30px] bg-gray-100 p-2 flex justify-center items-center border ${
+            className={`w-[30px] h-[30px] bg-gray-200 p-2 flex justify-center items-center border ${
               currentPage + 1 > totalPages
                 ? "next-page opacity-50 cursor-not-allowed"
                 : ""
@@ -65,15 +64,11 @@ const Pagination = ({
             <FaAngleRight />
           </button>
           <button
-            className={`last-page h-[30px] bg-gray-100 p-2 flex justify-center items-center border ${
-              currentPage === totalPages
-                ? "opacity-50 cursor-not-allowed"
-                : ""
+            className={`last-page bg-gray-200 text-sm p-2 flex justify-center items-center border ${
+              currentPage >= totalPages ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => handlePage(totalPages)}
-            // disabled={currentPage + 2 > totalPages}
           >
-            {/* <FaAngleDoubleRight /> */}
             Last Page
           </button>
         </div>

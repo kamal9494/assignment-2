@@ -14,7 +14,7 @@ const Table = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const page = 10;
+  const itemsOnPage = 10;
   const [editableRows, setEditableRows] = useState({});
 
   useEffect(() => {
@@ -43,13 +43,16 @@ const Table = () => {
 
   const handleSelectAll = () => {
     if (
-      selectedRows.length === page ||
+      selectedRows.length === itemsOnPage ||
       selectedRows.length === filteredData.length
     )
       setSelectedRows([]);
     else
       setSelectedRows(
-        filteredData.slice((currentPage - 1) * page, currentPage * page)
+        filteredData.slice(
+          (currentPage - 1) * itemsOnPage,
+          currentPage * itemsOnPage
+        )
       );
   };
 
@@ -116,14 +119,14 @@ const Table = () => {
   const handleBulkDelete = () => {
     setData([]);
     setFilteredData([]);
-  }
+  };
 
   const handleClear = () => {
-    setSearch('');
+    setSearch("");
     setFilteredData(data);
-  }
+  };
 
-  const totalPages = Math.ceil(filteredData.length / page);
+  const totalPages = Math.ceil(filteredData.length / itemsOnPage);
   return (
     <>
       <div className="p-2">
@@ -131,7 +134,7 @@ const Table = () => {
           <div className="flex gap-2">
             <input
               type="text"
-              className="border-2 rounded w-[300px] py-2 px-3 shadow text-gray-700 leading-tight focus:outline-[gray]"
+              className="border-2 rounded w-[250px] py-2 px-3 shadow text-gray-700 leading-tight focus:outline-[gray]"
               placeholder="Search any value"
               onChange={handleChange}
               value={search}
@@ -139,17 +142,21 @@ const Table = () => {
             />
             {search.length !== 0 && (
               <div className="flex items-center">
-                <IoMdClose size={25} className="cursor-pointer" onClick={handleClear}/>
+                <IoMdClose
+                  size={25}
+                  className="cursor-pointer"
+                  onClick={handleClear}
+                />
               </div>
             )}
             <button
               className="search-icon p-2 bg-gray-500 rounded-md text-white"
               onClick={handleSearch}
             >
-              <CiSearch size={25}/>
+              <CiSearch size={25} />
             </button>
           </div>
-          <button className="bulk-delete bulk bg-[#f7a3a9] p-1 rounded cursor-pointer text-white">
+          <button className="bulk-delete bulk bg-[#f7a3a9] p-2 rounded cursor-pointer text-white">
             <MdDeleteOutline size={25} onClick={handleBulkDelete} />
           </button>
         </div>
@@ -161,8 +168,7 @@ const Table = () => {
                   <input
                     type="checkbox"
                     checked={
-                      selectedRows.length === page ||
-                      selectedRows.length === filteredData.length
+                      selectedRows.length === itemsOnPage 
                     }
                     onChange={handleSelectAll}
                   />
@@ -183,7 +189,10 @@ const Table = () => {
             </thead>
             <tbody>
               {filteredData
-                .slice((currentPage - 1) * page, currentPage * page)
+                .slice(
+                  (currentPage - 1) * itemsOnPage,
+                  currentPage * itemsOnPage
+                )
                 .map((user) => {
                   return (
                     <tr
@@ -192,7 +201,7 @@ const Table = () => {
                         selectedRows.includes(user) ? "bg-gray-300" : ""
                       } border-2`}
                     >
-                      <td className="p-2 px-3 text-sm whitespace-nowrap">
+                      <td className="p-2 px-3 text-sm">
                         <input
                           key={user.id}
                           type="checkbox"
@@ -200,7 +209,7 @@ const Table = () => {
                           onChange={() => handleSelectRow(user)}
                         />
                       </td>
-                      <td className="p-2 px-3 text-sm whitespace-nowrap">
+                      <td className="p-2 px-3 text-sm">
                         {editableRows[user.id] ? (
                           <input
                             className="w-[100%] p-1 bg-gray-100 border"
@@ -212,7 +221,7 @@ const Table = () => {
                           user.name
                         )}
                       </td>
-                      <td className="p-2 px-3 text-sm whitespace-nowrap">
+                      <td className="p-2 px-3 text-sm">
                         {editableRows[user.id] ? (
                           <input
                             className="w-[100%] border bg-gray-100 p-1"
@@ -224,7 +233,7 @@ const Table = () => {
                           user.email
                         )}
                       </td>
-                      <td className="p-2 px-3 text-sm whitespace-nowrap">
+                      <td className="p-2 px-3 text-sm">
                         {editableRows[user.id] ? (
                           <input
                             className="w-[100%] bg-gray-100 border p-1"
@@ -236,7 +245,7 @@ const Table = () => {
                           user.role
                         )}
                       </td>
-                      <td className="p-2 px-3 text-sm whitespace-nowrap flex gap-2">
+                      <td className="p-2 px-3 text-sm flex gap-2">
                         {editableRows[user.id] ? (
                           <button
                             title="save"
@@ -273,6 +282,11 @@ const Table = () => {
                 })}
             </tbody>
           </table>
+          {filteredData.length === 0 && (
+            <div className="w-full flex items-center justify-center">
+              No Item
+            </div>
+          )}
         </div>
       </div>
       <Pagination
@@ -285,7 +299,7 @@ const Table = () => {
       <div>
         <button
           title="delete selected"
-          className="bg-red-500 p-1 mx-4 rounded cursor-pointer text-white"
+          className="bg-red-500 p-2 mx-4 rounded cursor-pointer text-white"
           onClick={handleSelectedDelete}
         >
           Delete Selected
