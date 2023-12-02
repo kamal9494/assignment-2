@@ -84,9 +84,9 @@ const Table = () => {
   };
 
   const handleEdit = (rowId) => {
-    console.log(rowId);
+    // console.log(rowId);
     setEditableRows((prev) => ({ ...prev, [rowId]: true }));
-    console.log(editableRows);
+    // console.log(editableRows);
   };
 
   const handleSave = (rowId) => {
